@@ -1,0 +1,28 @@
+{
+
+  "manifest_version": 2,
+  "name": "Chess moves",
+  "version": "1.0",
+
+  "description": "Gets the moves.",
+
+  "icons": {
+    "48": "icons/icon.png"
+  },
+
+ 
+  "browser_action": {
+    "default_icon": "icons/icon.png",
+    "default_title": "Chess",
+    "default_popup": "background.html"
+  },
+
+  "permissions": [
+    "http://127.0.0.1/*",
+    "webRequest",
+    "webNavigation",
+    "tabs",
+    "activeTab"
+  ]
+
+}
