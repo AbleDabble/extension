@@ -99,14 +99,13 @@ MutationObserver = window.MutationObserver;
 function format(move){
     let piece = '';
     if(move.childNodes.length > 1){
+        console.log("move.textContent =", move.textContent);
+        if(move.textContent.includes('=')){
+            return move.textContent + 'Q';
+        }
         piece = move.childNodes[0].className.split(' ').at(-1).toUpperCase();
         if(piece.includes('KNIGHT')){
             piece = 'N'
-        }
-        if(move.textContent.includes('=')){
-            newMove = move.textContent.split('=').at(0) + '=Q';
-            console.log("CONVERTING TO QUEEN SENDING MOVE", newMove);
-            return newMove
         }
         piece = Array.from(piece)[0];
     }

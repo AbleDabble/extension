@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="background.css">
+  </head>
+
+<body>
+  <div id="popup-content">
+    <button>Check Move List</button>
+    <button type="test">New Game</button>
+  </div>
+  <div id="menu">
+  <div class="menu-item">
+    <label for="depth">Depth</label>
+    <input type="range" id="depth" min="0" max="20" value="12">
+  </div>
+  <div class="menu-item">
+    <label for="time">Time</label>
+    <input type="number" id="time" min="200" max="5000" value="1000">
+  </div>
+  <div class="menu-item">
+    <label for="use-time">Use Time</label>
+    <input type="checkbox" id="use-time">
+  </div>
+</div>
+  <script src="background.js"></script>
+</body>
+
+</html>

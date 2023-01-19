@@ -1,28 +1,6 @@
 // browser.tabs.reload();
 function listenForClicks(){
     document.addEventListener("click", (e) => {
-        console.log("Copnnaskldfja");
-        // function newGame(tabs) {
-        //     console.log("new game sending message")
-        //     browser.tabs.sendMessage(tabs[0].id, {
-        //         command: "new",
-        //     });
-        // }
-
-        // function reportError(error) {
-        //     console.error(`Could not beastify: ${error}`);
-        // }
-
-        // /**
-        //  * Remove the page-hiding CSS from the active tab,
-        //  * send a "reset" message to the content script in the active tab.
-        //  */
-        // if(e.target.type === 'new'){
-        //     console.log("New game calling function  ")
-        //     browser.tabs.query({active: true, currentWindow: true})
-        //     .then(newGame)
-        //     .catch(reportError);
-        // }
         
     })
 }
