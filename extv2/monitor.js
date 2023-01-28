@@ -23,7 +23,6 @@
             if (this.moveCount > moveCount) {
                 return;
             }
-            this.deleteLines();
             this.moveCount = moveCount;
             let moveArr = Array.from(move);
             let start = moveArr.slice(0, 2);
@@ -44,6 +43,48 @@
             line.setAttribute("id", "" + this.lines.length);
             this.lines.push(line);
             this.arrows.appendChild(line);
+        }
+
+        addBadMoves(moves, moveCount){
+            if (this.moveCount > moveCount) {
+                return;
+            }
+            this.deleteLines();
+            for(let i = 0; i < moves.length; i++){
+                let move = moves[i]['Move'];
+                let moveArr = Array.from(move);
+                let start = moveArr.slice(0, 2);
+                let end = moveArr.slice(2);
+                let start_x = this.getXNumber(start[0]);
+                let start_y = this.getYNumber(start[1]);
+                let end_x = this.getXNumber(end[0]);
+                let end_y = this.getYNumber(end[1]);
+                let line = document.createElementNS(
+                    "http://www.w3.org/2000/svg",
+                    "line"
+                );
+                line.setAttribute("x1", "" + start_x);
+                line.setAttribute("y1", "" + start_y);
+                line.setAttribute("x2", "" + end_x);
+                line.setAttribute("y2", "" + end_y);
+                let color = 'rgb(80, 255, 0)'
+                if(i == moves.length - 1){
+                    color = 'rgb(20,40,255)';
+                }
+                line.setAttribute("style", `stroke:${color};stroke-width:2;opacity:0.75;`);
+                line.setAttribute("id", "" + this.lines.length);
+                let txt = document.createElementNS(
+                    'http://www.w3.org/2000/svg',
+                    'text'
+                );
+                txt.setAttributeNS(null, 'x', "" + end_x);
+                txt.setAttributeNS(null, 'y', "" + end_y);
+                txt.setAttributeNS(null, 'font-size', "0.25em");
+                txt.textContent = moves[i]['Centipawn'];
+                this.lines.push(line);
+                this.arrows.appendChild(line);
+                this.arrows.appendChild(txt);
+            }
         }
 
         addLine(move, opacity) {
@@ -96,8 +137,13 @@
 
         deleteLines() {
             var lines = document.querySelectorAll("line");
+            var texts = document.querySelectorAll("text");
             lines.forEach(function (line) {
                 line.remove();
+
+            });
+            texts.forEach(function (text) {
+                text.remove();
             });
         }
     }
@@ -183,7 +229,9 @@
         })
         let json = await response.json();
         console.log(json);
+        window.board.addBadMoves(json.badMoves, json.moveCount);
         window.board.addBestLine(json.move, json.moveCount);
+        console.log("calling add Bad Moves");
         await getEval();
             // .then((response) => {console.log(response); return response.json()})
             // .then((json) => {
@@ -200,7 +248,7 @@
         })
         let json = await response.json();
         console.log(json);
-        let name = document.querySelector('.player-bottom > div:nth-child(3) > div:nth-child(1) > a:nth-child(1)');
+        let name = document.querySelector('.user-username-component.user-username-white');
         name.innerHTML = "" + json.type + " " + json.value
     }
     /**

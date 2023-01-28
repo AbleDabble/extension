@@ -6,15 +6,17 @@ from subprocess import Popen, PIPE, STDOUT
 from stockfish import Stockfish
 from pydantic import BaseModel
 from typing import List, Union
+from random import sample
 import time
+
 stockfish = Stockfish(path='../../stockfish/stockfish.exe', parameters={'Hash': 4096, 'Threads': 12, "Contempt": 10})
+
 board = chess.Board()
 app = FastAPI()
 origins = [
     "*",
 ]
 
-stockfish.set_elo_rating(2000)
 
 app.add_middleware(
     CORSMiddleware,
@@ -40,6 +42,8 @@ async def best_move(moves: Moves):
     board = chess.Board()
     for move in moves.moves:
         board.push_san(move)
+    
+    # print("Evaluation took:", time.time() - start)
     stockfish.set_fen_position(board.fen())
     if moves.useTime:
         start = time.time()
@@ -48,9 +52,14 @@ async def best_move(moves: Moves):
     else: 
         start = time.time()
         move = stockfish.get_best_move()
+        # get a bad move
+        depth = stockfish.depth
+        stockfish.set_depth(2)
+        bad_moves = stockfish.get_top_moves(5)
+        stockfish.set_depth(depth)
         print("Stockfish took", time.time() - start)
     print(move)
-    return {"move": move, "moveCount": len(moves.moves)}
+    return {"move": move, "moveCount": len(moves.moves), "badMoves":bad_moves}
 
 @app.post('/depth/')
 async def set_depth(depth: Depth):
